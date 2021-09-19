@@ -15,6 +15,7 @@ public class VoteConverter implements ConverterInterface<VoteDTO, VoteEntity> {
                 .id(entity.getId())
                 .initDate(entity.getInitDate())
                 .membersCPF(entity.getMembersCPF())
+                .voteEnum(entity.getVoteEnum())
                 .build();
     }
 
@@ -25,6 +26,7 @@ public class VoteConverter implements ConverterInterface<VoteDTO, VoteEntity> {
                 .id(dto.getId())
                 .initDate(dto.getInitDate())
                 .membersCPF(dto.getMembersCPF())
+                .voteEnum(dto.getVoteEnum())
                 .build();
     }
 

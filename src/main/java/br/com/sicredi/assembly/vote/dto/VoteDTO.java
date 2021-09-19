@@ -1,5 +1,6 @@
 package br.com.sicredi.assembly.vote.dto;
 
+import br.com.sicredi.assembly.vote.enums.VoteEnum;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -15,4 +16,5 @@ public class VoteDTO {
     private List<String> membersCPF;
     private LocalDateTime initDate;
     private LocalDateTime finalDate;
+    private VoteEnum voteEnum;
 }

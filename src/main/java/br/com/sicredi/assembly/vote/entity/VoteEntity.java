@@ -1,5 +1,6 @@
 package br.com.sicredi.assembly.vote.entity;
 
+import br.com.sicredi.assembly.vote.enums.VoteEnum;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -19,5 +20,6 @@ public class VoteEntity {
     private List<String> membersCPF;
     private LocalDateTime initDate;
     private LocalDateTime finalDate;
+    private VoteEnum voteEnum;
 
 }
