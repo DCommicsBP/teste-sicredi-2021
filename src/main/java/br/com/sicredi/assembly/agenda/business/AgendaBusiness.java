@@ -5,6 +5,9 @@ import br.com.sicredi.assembly.agenda.dto.AgendaDTO;
 import br.com.sicredi.assembly.agenda.entity.AgendaEntity;
 import br.com.sicredi.assembly.agenda.service.AgendaService;
 import br.com.sicredi.assembly.core.interfaces.ServiceInterface;
+import br.com.sicredi.assembly.core.validate.DateValidator;
+import br.com.sicredi.assembly.meeting.entity.MeetingEntity;
+import br.com.sicredi.assembly.meeting.service.MeetingService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +20,16 @@ public class AgendaBusiness implements ServiceInterface<AgendaDTO> {
 
     private final AgendaConverter converter;
     private final AgendaService service;
+    private final MeetingService meetingService;
 
     @Override
     public AgendaDTO create(AgendaDTO agendaDTO) {
+        Optional<MeetingEntity> meetingEntity = meetingService.get(agendaDTO.getMeetingId());
+        meetingEntity.ifPresent(meeting -> {
+            DateValidator.validateAgendaDate(agendaDTO.getInitDate(), agendaDTO.getFinishDate(),
+                    meeting.getInitDate(), meeting.getFinishDate());
+
+        });
         AgendaEntity entity = converter.convertFromDto(agendaDTO);
         return converter.convertFromEntity(service.create(entity));
     }
@@ -32,6 +42,12 @@ public class AgendaBusiness implements ServiceInterface<AgendaDTO> {
 
     @Override
     public void edit(String id, AgendaDTO agendaDTO) {
+        Optional<MeetingEntity> meetingEntity = meetingService.get(agendaDTO.getMeetingId());
+        meetingEntity.ifPresent(meeting -> {
+            DateValidator.validateAgendaDate(agendaDTO.getInitDate(), agendaDTO.getFinishDate(),
+                    meeting.getInitDate(), meeting.getFinishDate());
+        });
+
         service.edit(id,converter.convertFromDto(agendaDTO));
 
     }

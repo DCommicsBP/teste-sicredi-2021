@@ -18,8 +18,7 @@ public class VoteEntity {
     @Id
     private String id ;
     private List<String> membersCPF;
-    private LocalDateTime initDate;
-    private LocalDateTime finalDate;
+    private LocalDateTime time;
     private VoteEnum voteEnum;
 
 }

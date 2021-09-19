@@ -19,6 +19,7 @@ public class AgendaConverter implements ConverterInterface<AgendaDTO, AgendaEnti
                 .description(entity.getDescription())
                 .initDate(entity.getInitVote())
                 .finishDate(entity.getFinishVote())
+                .meetingId(entity.getMeetingId())
                 .build();
     }
 

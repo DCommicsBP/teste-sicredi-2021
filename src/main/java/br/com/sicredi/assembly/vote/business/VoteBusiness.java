@@ -1,5 +1,6 @@
 package br.com.sicredi.assembly.vote.business;
 
+import br.com.sicredi.assembly.agenda.service.AgendaService;
 import br.com.sicredi.assembly.core.interfaces.ServiceInterface;
 import br.com.sicredi.assembly.vote.api.converter.VoteConverter;
 import br.com.sicredi.assembly.vote.dto.VoteDTO;
@@ -15,9 +16,12 @@ import java.util.Optional;
 @AllArgsConstructor
 public class VoteBusiness implements ServiceInterface<VoteDTO> {
     private final VoteService service;
+    private final AgendaService agendaService;
     private final VoteConverter converter;
     @Override
     public VoteDTO create(VoteDTO voteDTO) {
+
+
         VoteEntity voteEntity = service.create(converter.convertFromDto(voteDTO));
         return converter.convertFromEntity(service.create(voteEntity));
     }

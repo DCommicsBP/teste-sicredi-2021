@@ -19,6 +19,7 @@ public class AgendaEntity {
     private String id;
     private String title;
     private String description;
+    private String meetingId;
     private LocalDateTime initVote;
     private LocalDateTime finishVote;
 
