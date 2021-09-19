@@ -1,7 +1,10 @@
 spring:
-  datasource:
-    url: mongodb://localhost/sicredi-sessao-votacao
+  profiles:
+    active: local
   data:
     mongodb:
-      port: 27017
-      authentication-database: None
+      uri: mongodb://root:bubu1234@localhost/assembly?authSource=admin
+
+
+server:
+  port: 8084
