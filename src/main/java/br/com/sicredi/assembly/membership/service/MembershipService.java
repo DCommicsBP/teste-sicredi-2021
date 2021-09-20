@@ -45,4 +45,5 @@ public class MembershipService implements ServiceInterface<MembershipEntity> {
     public  Optional<MembershipEntity> getByCpf(String memberCpf) {
         return this.repository.findByCpf(memberCpf);
     }
+
 }

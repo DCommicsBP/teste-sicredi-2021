@@ -19,6 +19,5 @@ public class VoteEntity {
     private String id ;
     private LocalDateTime time;
     private String agendaId;
-    private String memberCpf;
 
 }

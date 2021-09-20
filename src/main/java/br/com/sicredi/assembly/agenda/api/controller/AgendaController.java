@@ -3,6 +3,7 @@ package br.com.sicredi.assembly.agenda.api.controller;
 import br.com.sicredi.assembly.agenda.business.AgendaBusiness;
 import br.com.sicredi.assembly.agenda.dto.AgendaDTO;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,7 @@ public class AgendaController {
 
     @GetMapping("/{id}/result")
     public ResponseEntity<?> getResult(@PathVariable String id){
-        return ResponseEntity.ok(business.get(id));
+        return ResponseEntity.ok(business.returnResult(id));
     }
 
     @DeleteMapping("/{id}")

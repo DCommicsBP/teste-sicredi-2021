@@ -49,7 +49,6 @@ public class AgendaBusinessTest {
         AgendaEntity agendaEntity = AgendaUtils.entity(agenda);
 
         when(meetingService.get(anyString())).thenReturn(Optional.of(meetingEntity));
-        when(service.create(agendaEntity)).thenReturn(agendaEntity);
         when(converter.convertFromDto(agenda)).thenReturn(agendaEntity);
         when(converter.convertFromEntity(agendaEntity)).thenReturn(agenda);
 
@@ -59,7 +58,6 @@ public class AgendaBusinessTest {
         assertEquals(agendaDTO.getFinishDate(), agendaEntity.getFinishVote());
         assertEquals(agendaDTO.getTitle(), agendaEntity.getTitle());
 
-        verify(service).create(agendaEntity);
         verify(converter).convertFromDto(agenda);
         verify(converter).convertFromEntity(agendaEntity);
     }

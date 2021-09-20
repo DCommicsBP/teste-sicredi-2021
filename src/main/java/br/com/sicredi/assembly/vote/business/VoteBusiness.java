@@ -12,11 +12,15 @@ import br.com.sicredi.assembly.vote.dto.VoteDTO;
 import br.com.sicredi.assembly.vote.entity.VoteEntity;
 import br.com.sicredi.assembly.vote.service.VoteService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
+
 
 @Service
 @AllArgsConstructor
@@ -29,9 +33,11 @@ public class VoteBusiness implements ServiceInterface<VoteDTO> {
 
     private final VoteConverter converter;
 
+    private static final Logger log = LogManager.getLogger(AgendaBusiness.class);
+
     @Override
     public VoteDTO create(VoteDTO voteDTO) {
-
+        log.info("Entrando no serviço que cria novo voto. ");
         AgendaDTO agendaDTO = agendaBusiness.get(voteDTO.getAgendaId()).get();
         Optional<MembershipDTO> membershipDTO = membershipBusiness.getByCpf(voteDTO.getMemberCpf());
         AtomicReference<VoteDTO> vote = new AtomicReference<>(voteDTO);
@@ -40,14 +46,16 @@ public class VoteBusiness implements ServiceInterface<VoteDTO> {
             agendaDTO.getMembershipCpf().stream().filter(agenda -> agenda.equalsIgnoreCase(member.getCpf()))
                     .findFirst()
                     .ifPresentOrElse(memberPresent -> {
+                        log.error("O Cooperado já votou essa pauta. ");
                         throw new BadRequestException("O cooperativado com o cpf ".concat(memberPresent).concat(", não poderá votar novamente na mesma pauta. "));
                     }, () -> {
+                        log.info("O usuário pode votar,  pois ainda não votou.");
 
                         DateValidator.validateVotingDateBetweenTwoDates(agendaDTO.getInitDate(), agendaDTO.getFinishDate(), voteDTO.getTime(),
                                 "O voto não pode ser computado porque não está de acordo com o limite de tempo. ");
 
                         VoteEntity voteEntity = service.create(converter.convertFromDto(voteDTO));
-                        agendaDTO.getMembershipCpf().add(voteEntity.getMemberCpf());
+                        agendaDTO.getMembershipCpf().add(voteDTO.getMemberCpf());
                         agendaBusiness.edit(agendaDTO.getId(), agendaDTO);
                         vote.set(converter.convertFromEntity(service.create(voteEntity)));
 

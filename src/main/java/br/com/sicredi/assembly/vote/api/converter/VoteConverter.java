@@ -15,7 +15,6 @@ public class VoteConverter implements ConverterInterface<VoteDTO, VoteEntity> {
         return VoteDTO.builder()
                 .id(entity.getId())
                 .time(entity.getTime())
-                .memberCpf(entity.getMemberCpf())
                 .build();
     }
 
@@ -23,7 +22,6 @@ public class VoteConverter implements ConverterInterface<VoteDTO, VoteEntity> {
     public VoteEntity convertFromDto(VoteDTO dto) {
         return VoteEntity.builder()
                 .id(dto.getId())
-                .memberCpf(dto.getMemberCpf())
                 .time(dto.getTime())
                 .agendaId(dto.getAgendaId())
                 .build();
