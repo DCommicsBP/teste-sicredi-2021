@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,5 +23,6 @@ public class AgendaEntity {
     private String meetingId;
     private LocalDateTime initVote;
     private LocalDateTime finishVote;
+    private List<String> membershipCpf;
 
 }

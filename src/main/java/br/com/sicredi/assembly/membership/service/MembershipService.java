@@ -41,4 +41,8 @@ public class MembershipService implements ServiceInterface<MembershipEntity> {
     public void delete(String id) {
         get(id).ifPresent(repository::delete);
     }
+
+    public  Optional<MembershipEntity> getByCpf(String memberCpf) {
+        return this.repository.findByCpf(memberCpf);
+    }
 }

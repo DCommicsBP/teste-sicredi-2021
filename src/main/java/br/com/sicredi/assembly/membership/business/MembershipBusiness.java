@@ -1,6 +1,8 @@
 package br.com.sicredi.assembly.membership.business;
 
+import br.com.sicredi.assembly.core.exceptions.BadRequestException;
 import br.com.sicredi.assembly.core.interfaces.ServiceInterface;
+import br.com.sicredi.assembly.core.validate.CpfValidator;
 import br.com.sicredi.assembly.membership.api.converter.MemberShipConverter;
 import br.com.sicredi.assembly.membership.dto.MembershipDTO;
 import br.com.sicredi.assembly.membership.entity.MembershipEntity;
@@ -21,8 +23,13 @@ public class MembershipBusiness implements ServiceInterface<MembershipDTO> {
 
     @Override
     public MembershipDTO create(MembershipDTO membershipDTO) {
-        MembershipEntity entity = converter.convertFromDto(membershipDTO);
-        return converter.convertFromEntity(service.create(entity));
+        try{
+            CpfValidator.isValid(membershipDTO.getCpf());
+            MembershipEntity entity = converter.convertFromDto(membershipDTO);
+            return converter.convertFromEntity(service.create(entity));
+        }catch (Exception exception){
+            throw new BadRequestException("Não foi possível inserir o cooperado, pois o CPF é invalido. ");
+        }
     }
 
     @Override
@@ -32,7 +39,7 @@ public class MembershipBusiness implements ServiceInterface<MembershipDTO> {
 
     @Override
     public void edit(String id, MembershipDTO membershipDTO) {
-        service.edit(id,converter.convertFromDto(membershipDTO));
+        service.edit(id, converter.convertFromDto(membershipDTO));
     }
 
     @Override
@@ -43,5 +50,9 @@ public class MembershipBusiness implements ServiceInterface<MembershipDTO> {
     @Override
     public void delete(String id) {
         service.delete(id);
+    }
+
+    public Optional<MembershipDTO> getByCpf(String memberCpf) {
+        return service.getByCpf(memberCpf).map(converter::convertFromEntity);
     }
 }

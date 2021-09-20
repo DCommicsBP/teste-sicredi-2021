@@ -22,6 +22,12 @@ public class AgendaController {
     public ResponseEntity<?> get(@PathVariable String id){
         return ResponseEntity.ok(business.get(id));
     }
+
+    @GetMapping("/{id}/result")
+    public ResponseEntity<?> getResult(@PathVariable String id){
+        return ResponseEntity.ok(business.get(id));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable String id){
         business.delete(id);

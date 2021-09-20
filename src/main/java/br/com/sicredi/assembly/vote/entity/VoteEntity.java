@@ -17,8 +17,8 @@ import java.util.List;
 public class VoteEntity {
     @Id
     private String id ;
-    private List<String> membersCPF;
     private LocalDateTime time;
-    private VoteEnum voteEnum;
+    private String agendaId;
+    private String memberCpf;
 
 }
