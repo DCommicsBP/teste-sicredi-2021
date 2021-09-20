@@ -29,13 +29,13 @@ public class MembershipController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable String id, @RequestBody MembershipDTO membershipDTO) {
+    public ResponseEntity<?> update(@PathVariable String id, @RequestBody @Valid MembershipDTO membershipDTO) {
         business.edit(id, membershipDTO);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable String id, @RequestBody MembershipDTO membershipDTO) {
+    public ResponseEntity<?> delete(@PathVariable String id) {
         business.delete(id);
         return ResponseEntity.noContent().build();
     }

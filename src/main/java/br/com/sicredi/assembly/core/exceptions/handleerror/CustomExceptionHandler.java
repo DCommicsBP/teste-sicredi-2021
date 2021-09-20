@@ -50,26 +50,26 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
     public ErrorModel handleDefaultException(Error ex) {
-        ErrorModel response = ErrorModel
+        return ErrorModel
                 .builder()
                 .date(LocalDateTime.now())
                 .message(ex.getMessage())
                 .statusCode(HttpStatus.INTERNAL_SERVER_ERROR)
                 .build();
-        return response;
+
     }
 
     @ExceptionHandler(InternalServerException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public ErrorModel handleDefaultInternalServierException(InternalServerException ex) {
-        ErrorModel response = ErrorModel
+        return ErrorModel
                 .builder()
                 .date(LocalDateTime.now())
                 .message(ex.getMessage())
                 .statusCode(HttpStatus.INTERNAL_SERVER_ERROR)
                 .build();
-        return response;
+
     }
 
 
@@ -81,7 +81,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     private ErrorResponseModel getErrorResponse(MethodArgumentNotValidException ex, HttpStatus status, List<ErrorModel> errors) {
-        return new ErrorResponseModel("Requisição possui campos inválidos", status.value(),
+        return new ErrorResponseModel("Um ou mais campos estão inválidos!!!!", status.value(),
                 status.getReasonPhrase(), ex.getBindingResult().getObjectName(), errors);
     }
 

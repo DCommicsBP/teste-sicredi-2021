@@ -32,9 +32,11 @@ public class MembershipService implements ServiceInterface<MembershipEntity> {
 
     @Override
     public void edit(String id, MembershipEntity membershipEntity) {
+
             get(id).ifPresent(membershipEntity1 -> {
+
                 membershipEntity.setId(membershipEntity1.getId());
-                repository.save(membershipEntity1);
+                repository.save(membershipEntity);
             });
     }
 

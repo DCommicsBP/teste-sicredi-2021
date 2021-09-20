@@ -30,21 +30,21 @@ public class MembershipBusiness implements ServiceInterface<MembershipDTO> {
     @Override
     public MembershipDTO create(MembershipDTO membershipDTO) {
 
-            String cpf = checkZerosAndOne(membershipDTO.getCpf());
-            boolean isUsed = checkIfCpfHasAlreadyBeenUsed(service.list(), cpf );
-            boolean isValid = isValid(cpf);
+        String cpf = checkZerosAndOne(membershipDTO.getCpf());
+        boolean isUsed = checkIfCpfHasAlreadyBeenUsed(service.list(), cpf);
+        boolean isValid = isValid(cpf);
 
-            if (isUsed) {
-                throw new BadRequestException("Usuário já cadastrado em nosso sistema. ");
-            }
+        if (isUsed) {
+            throw new BadRequestException("Usuário já cadastrado em nosso sistema. ");
+        }
 
-            if(!isValid){
-                throw new BadRequestException("Não foi possível inserir o cooperado, pois o CPF é invalido. ");
-            }
+        if (!isValid) {
+            throw new BadRequestException("Não foi possível inserir o cooperado, pois o CPF é invalido. ");
+        }
 
-            MembershipEntity entity = converter.convertFromDto(membershipDTO);
-            log.info("Entrou no serviço que cria novo cooperado. ");
-            return converter.convertFromEntity(service.create(entity));
+        MembershipEntity entity = converter.convertFromDto(membershipDTO);
+        log.info("Entrou no serviço que cria novo cooperado. ");
+        return converter.convertFromEntity(service.create(entity));
 
     }
 
@@ -57,8 +57,21 @@ public class MembershipBusiness implements ServiceInterface<MembershipDTO> {
     @Override
     public void edit(String id, MembershipDTO membershipDTO) {
         log.info("Entrou no serviço que edita cooperado. ");
+        checkZerosAndOne(membershipDTO.getCpf());
+        service.list().stream()
+                .filter(membershipEntity -> membershipEntity.getCpf().equalsIgnoreCase(membershipDTO.getCpf()))
+                .findFirst()
+                .ifPresentOrElse(membershipEntity -> {
+                if(membershipEntity.getId().equalsIgnoreCase(membershipDTO.getId())){
+                    service.edit(id, converter.convertFromDto(membershipDTO));
+                }else{
+                    throw new BadRequestException("Você não pode inserir o mesmo CPF para outro cooperado. ");
+                }
+        }, ()-> {
+                    service.edit(id, converter.convertFromDto(membershipDTO));
+                });
 
-        service.edit(id, converter.convertFromDto(membershipDTO));
+
     }
 
     @Override
