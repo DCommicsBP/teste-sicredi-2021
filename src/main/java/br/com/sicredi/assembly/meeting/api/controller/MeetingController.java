@@ -23,6 +23,7 @@ public class MeetingController {
     public ResponseEntity<?> listAll(){
         return new ResponseEntity<>(business.list(), HttpStatus.OK);
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> listAll(@PathVariable String id){
         return new ResponseEntity<>(business.get(id).get(), HttpStatus.OK);

@@ -2,7 +2,6 @@ package br.com.sicredi.assembly.agenda.dto;
 
 import br.com.sicredi.assembly.vote.enums.VoteEnum;
 import lombok.*;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -13,6 +12,7 @@ import java.util.List;
 @Setter
 public class AgendaDTO {
     private String id;
+
     private String title;
     private String description;
     private String meetingId;

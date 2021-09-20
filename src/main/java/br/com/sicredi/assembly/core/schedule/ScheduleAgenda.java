@@ -1,7 +1,9 @@
 package br.com.sicredi.assembly.core.schedule;
 
 import br.com.sicredi.assembly.agenda.business.AgendaBusiness;
+import br.com.sicredi.assembly.agenda.dto.ResultAgendaDTO;
 import br.com.sicredi.assembly.agenda.message.ProducerMessage;
+import br.com.sicredi.assembly.agenda.util.AgendaUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -11,7 +13,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 
 @Component
-@EnableScheduling
+//@EnableScheduling
 public class ScheduleAgenda {
     final Logger log = Logger.getLogger(ScheduleAgenda.class);
     @Autowired
@@ -19,16 +21,15 @@ public class ScheduleAgenda {
     private final long MINUTES = 1000 * 60;
     ProducerMessage producerMessage;
 
-    @Scheduled(fixedDelay = MINUTES)
-    public void verificaPorHora() {
+//    @Scheduled(fixedDelay = MINUTES)
+    public void verifyByMinute() {
 
        agendaBusiness
                 .list()
                 .forEach(agendaDTO -> {
                     if (LocalDateTime.now().isAfter(agendaDTO.getFinishDate())) {
-                        producerMessage.newMessage();
+                        producerMessage.newMessage(AgendaUtil.resultAgendaDTOBuilder(agendaDTO));
                     }
-
                 });
     }
 }

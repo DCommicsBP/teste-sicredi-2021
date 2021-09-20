@@ -9,14 +9,17 @@ import java.util.stream.Collectors;
 
 public abstract class AgendaUtil {
 
-    public static int calculateResult(List<VoteEnum> voteEnums, VoteEnum filter){
+    private static int calculateResult(List<VoteEnum> voteEnums, VoteEnum filter){
 
         return  voteEnums.stream()
                 .filter(agendaInternal -> agendaInternal.equals(filter))
                 .collect(Collectors.toList()).size();
     }
 
-    public static ResultAgendaDTO resultAgendaDTOBuilder(AgendaDTO agendaDTO, int countYes, int countNo){
+    public static ResultAgendaDTO resultAgendaDTOBuilder(AgendaDTO agendaDTO){
+        int countNo = AgendaUtil.calculateResult(agendaDTO.getVoteEnum(), VoteEnum.NO);
+        int countYes = AgendaUtil.calculateResult(agendaDTO.getVoteEnum(), VoteEnum.YES);
+
         return ResultAgendaDTO.builder()
                 .resultNo(countNo)
                 .resultYes(countYes)

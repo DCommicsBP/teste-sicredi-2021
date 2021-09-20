@@ -1,64 +1,60 @@
 package br.com.sicredi.assembly.core.validate;
 
-import br.com.sicredi.assembly.membership.business.MembershipBusiness;
+import br.com.sicredi.assembly.core.exceptions.BadRequestException;
 import br.com.sicredi.assembly.membership.entity.MembershipEntity;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class CpfValidator {
 
-    private static final List<Character> auxiliarArray = new ArrayList<>();
 
-    public static String isValid(String inputCpf) throws Exception {
+    public static boolean isValid(String inputCpf)  {
+        String cpfWithoutDigits = inputCpf.substring(0, 9);
+        String digits = inputCpf.substring(9,11);
+        int calc1 =  result(cpfWithoutDigits);
+        int firstDigit = calc1 == 10? 0: calc1;
+        String newCpf = cpfWithoutDigits.concat(Integer.toString(firstDigit));
+        int calc2 = result(newCpf.substring(1, newCpf.length()));
+        int secondDigit = calc2 == 10? 0: calc2;
 
-        int remainder = 0, total = 0;
-        String digit = "";
-        String cpf = new StringBuilder(inputCpf).reverse().toString();
-        char[] array = cpf.toCharArray();
+        return Integer.toString(firstDigit).concat(Integer.toString(secondDigit)).equalsIgnoreCase(digits);
+    }
 
-        for (Character c : array)
-            auxiliarArray.add(c);
+    public static int result(String inputCpf){
+        List<String> characteres = new ArrayList<>(Arrays.asList(inputCpf.split("")));
 
-        auxiliarArray.remove(0);
-        auxiliarArray.remove(0);
+        AtomicInteger counter = new AtomicInteger(10);
+        AtomicInteger accomulate = new AtomicInteger(0);
 
-        for (int j = 0; j <= 1; j++) {
-            total = iteration(j);
-            Collections.reverse(auxiliarArray);
-            remainder = 11 - (total % 11);
+        characteres.forEach(charactere-> {
+            int number = Integer.parseInt(charactere);
+            int acc = accomulate.get();
+            accomulate.set(acc+ (counter.getAndDecrement() * number));
+        });
+        return accomulate.get() * 10 % 11;
+    }
 
-            if (remainder == 10 || remainder == 11) remainder = 0;
-
-            digit = remainder + "";
-            auxiliarArray.add(digit.charAt(0));
-            Collections.reverse(auxiliarArray);
+    public static String checkZerosAndOne(String cpf){
+        if("00000000000".equalsIgnoreCase(cpf)){
+            throw new BadRequestException("Você não pode inserir um cpf composto apenas por zeros");
         }
-        return new StringBuilder(buildValidatedCpf()).reverse().toString();
-    }
-
-    private static String buildValidatedCpf() {
-        StringBuilder cpf = new StringBuilder();
-        for (Character c : CpfValidator.auxiliarArray) cpf.append(c);
-        return cpf.toString();
-    }
-
-    private static int iteration(int externalIndex) {
-        int index = 8 + externalIndex, total = 0, max = 10 + externalIndex - CpfValidator.auxiliarArray.size();
-        for (int i = 10 + externalIndex; i > max; ) {
-            if (Character.isDigit(CpfValidator.auxiliarArray.get(index)))
-                total += Integer.parseInt(CpfValidator.auxiliarArray.get(index) + "") * i;
-            i--;
-            index--;
+        if("11111111111".equalsIgnoreCase(cpf)){
+            throw new BadRequestException("Você não pode inserir um cpf composto apenas pelo número um. ");
         }
-        return total;
+        return  cpf.replace(".","").replace("-","").replace("/", "");
     }
-
     public static boolean checkIfCpfHasAlreadyBeenUsed(List<MembershipEntity> membershipEntities, String cpf) {
-       return membershipEntities.stream()
-                .map(membershipEntity -> membershipEntity.getCpf().equalsIgnoreCase(cpf))
-                .findFirst().get();
+        AtomicBoolean flag = new AtomicBoolean(false);
+         membershipEntities.stream()
+                .filter(membershipEntity -> membershipEntity.getCpf().equalsIgnoreCase(cpf))
+                .findFirst()
+                .ifPresentOrElse(elemet->{ flag.set(true);}, ()->  flag.set(false));
+
+         return flag.get();
 
     }
 }

@@ -2,22 +2,16 @@ package br.com.sicredi.assembly.core.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
-import springfox.documentation.service.VendorExtension;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 
 @Configuration
@@ -26,19 +20,15 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
     @Bean
     public Docket productApi() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("name")
-                .directModelSubstitute(LocalDateTime.class, String.class)
-                .directModelSubstitute(LocalDate.class, String.class)
-                .directModelSubstitute(LocalTime.class, String.class)
-                .directModelSubstitute(ZonedDateTime.class, String.class)
-                .apiInfo(metaInfo())
                 .select()
-                .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
-                .build();
+                .apis(RequestHandlerSelectors.basePackage("br.com.sicredi.assembly"))
+                .paths(PathSelectors.any())
+                .build()
+                .apiInfo(metaInfo());
+        }
 
-    }
 
-    private ApiInfo metaInfo() {
+      private ApiInfo metaInfo() {
 
         ApiInfo apiInfo = new ApiInfo(
                 "Portal de Votação de Pautas de Assembléia",

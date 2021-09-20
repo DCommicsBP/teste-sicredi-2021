@@ -10,7 +10,6 @@ import br.com.sicredi.assembly.core.interfaces.ServiceInterface;
 import br.com.sicredi.assembly.core.validate.DateValidator;
 import br.com.sicredi.assembly.meeting.entity.MeetingEntity;
 import br.com.sicredi.assembly.meeting.service.MeetingService;
-import br.com.sicredi.assembly.vote.enums.VoteEnum;
 import lombok.AllArgsConstructor;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -62,8 +61,7 @@ public class AgendaBusiness implements ServiceInterface<AgendaDTO> {
             log.info("entrou no serviço de editar pauta. ");
             DateValidator.validateAgendaDate(agendaDTO.getInitDate(), agendaDTO.getFinishDate(),
                     meeting.getInitDate(), meeting.getFinishDate());
-            service.edit(id,converter.convertFromDto(agendaDTO));
-
+            service.edit(id, converter.convertFromDto(agendaDTO));
         });
     }
 
@@ -77,27 +75,17 @@ public class AgendaBusiness implements ServiceInterface<AgendaDTO> {
     @Override
     public void delete(String id) {
         log.info("Entrou no serviço de excluir pauta. ");
-
         service.delete(id);
-
     }
 
-    public ResultAgendaDTO returnResult(String id){
+    public ResultAgendaDTO returnResult(String id) {
         AtomicReference<ResultAgendaDTO> result = new AtomicReference<>();
         log.info("Entrou no serviço que monta o resultado da votação. ");
 
-        get(id).ifPresent(agenda-> {
-            int countNo = AgendaUtil.calculateResult(agenda.getVoteEnum(), VoteEnum.NO);
-            int countYes = AgendaUtil.calculateResult(agenda.getVoteEnum(), VoteEnum.YES);
-
-            result.set(AgendaUtil.resultAgendaDTOBuilder(agenda, countYes, countNo));
+        get(id).ifPresent(agenda -> {
+            result.set(AgendaUtil.resultAgendaDTOBuilder(agenda));
             log.info("Processou a votação. ");
-
-            //todo processar a quantidade dos que foram yes - Ok
-            //todo processar a quantidade dos que foram no - OK
-            //todo adicionar no result agenda dto - OK
         });
-
         return result.get();
     }
 }

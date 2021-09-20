@@ -4,6 +4,7 @@ import br.com.sicredi.assembly.core.interfaces.ServiceInterface;
 import br.com.sicredi.assembly.membership.entity.MembershipEntity;
 import br.com.sicredi.assembly.membership.repository.MembershipRepository;
 import lombok.AllArgsConstructor;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Optional;
 @AllArgsConstructor
 @Service
 public class MembershipService implements ServiceInterface<MembershipEntity> {
+    final Logger log = Logger.getLogger(MembershipService.class);
     private final MembershipRepository repository;
 
     @Override
@@ -21,6 +23,10 @@ public class MembershipService implements ServiceInterface<MembershipEntity> {
 
     @Override
     public Optional<MembershipEntity> get(String id) {
+        Optional<MembershipEntity> findMembership = repository.findById(id);
+        if(findMembership.isEmpty()){
+            log.error("Não foi possivel encontrar o registro do cooperado.");
+        }
         return repository.findById(id);
     }
 

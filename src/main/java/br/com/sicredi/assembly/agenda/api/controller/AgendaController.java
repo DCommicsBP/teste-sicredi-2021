@@ -5,6 +5,7 @@ import br.com.sicredi.assembly.agenda.dto.AgendaDTO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -36,7 +37,7 @@ public class AgendaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> edit(@PathVariable String id, @RequestBody AgendaDTO agendaDTO){
+    public ResponseEntity<?> edit(@PathVariable String id, @RequestBody @Validated AgendaDTO agendaDTO){
         business.edit(id, agendaDTO);
         return ResponseEntity.noContent().build();
     }

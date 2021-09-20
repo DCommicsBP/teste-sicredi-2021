@@ -1,6 +1,7 @@
 package br.com.sicredi.assembly.core.exceptions.handleerror;
 
 import br.com.sicredi.assembly.core.exceptions.BadRequestException;
+import br.com.sicredi.assembly.core.exceptions.InternalServerException;
 import br.com.sicredi.assembly.core.exceptions.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +14,11 @@ import java.time.LocalDateTime;
 
 @RestControllerAdvice
 public class CustomExceptionHandler {
+
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    protected ResponseEntity<ErrorModel> notFound(NotFoundException ex) {
+    protected ResponseEntity<ErrorModel> handleNotFoundException(NotFoundException ex) {
 
         ErrorModel error = ErrorModel.builder()
                 .date(LocalDateTime.now())
@@ -25,8 +27,10 @@ public class CustomExceptionHandler {
                 .build();
          return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
-    @org.springframework.web.bind.annotation.ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<ErrorModel> badRequest(BadRequestException ex) {
+    @ExceptionHandler(BadRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ResponseEntity<ErrorModel> handleBadRequestException(BadRequestException ex) {
 
         ErrorModel error = ErrorModel.builder()
                 .date(LocalDateTime.now())
@@ -36,10 +40,10 @@ public class CustomExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(Error.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    public ErrorModel handleDefaultException(Exception ex) {
+    public ErrorModel handleDefaultException(Error ex) {
         ErrorModel response = ErrorModel
                 .builder()
                 .date(LocalDateTime.now())
@@ -48,5 +52,17 @@ public class CustomExceptionHandler {
                 .build();
         return response;
     }
-}
+
+    @ExceptionHandler(InternalServerException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    public ErrorModel handleDefaultInternalServierException(InternalServerException ex) {
+        ErrorModel response = ErrorModel
+                .builder()
+                .date(LocalDateTime.now())
+                .message(ex.getMessage())
+                .statusCode(HttpStatus.INTERNAL_SERVER_ERROR)
+                .build();
+        return response;
+    }
 }

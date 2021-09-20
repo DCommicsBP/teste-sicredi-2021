@@ -9,13 +9,14 @@ import br.com.sicredi.assembly.membership.dto.MembershipDTO;
 import br.com.sicredi.assembly.membership.entity.MembershipEntity;
 import br.com.sicredi.assembly.membership.service.MembershipService;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
+import static br.com.sicredi.assembly.core.validate.CpfValidator.*;
 
 @Service
 @AllArgsConstructor
@@ -26,18 +27,25 @@ public class MembershipBusiness implements ServiceInterface<MembershipDTO> {
     private static final Logger log = LogManager.getLogger(AgendaBusiness.class);
 
 
-
     @Override
     public MembershipDTO create(MembershipDTO membershipDTO) {
-        try{
-            CpfValidator.isValid(membershipDTO.getCpf());
+
+            String cpf = checkZerosAndOne(membershipDTO.getCpf());
+            boolean isUsed = checkIfCpfHasAlreadyBeenUsed(service.list(), cpf );
+            boolean isValid = isValid(cpf);
+
+            if (isUsed) {
+                throw new BadRequestException("Usuário já cadastrado em nosso sistema. ");
+            }
+
+            if(!isValid){
+                throw new BadRequestException("Não foi possível inserir o cooperado, pois o CPF é invalido. ");
+            }
+
             MembershipEntity entity = converter.convertFromDto(membershipDTO);
             log.info("Entrou no serviço que cria novo cooperado. ");
             return converter.convertFromEntity(service.create(entity));
-        }catch (Exception exception){
-            log.error(exception.getMessage());
-            throw new BadRequestException("Não foi possível inserir o cooperado, pois o CPF é invalido. ");
-        }
+
     }
 
     @Override

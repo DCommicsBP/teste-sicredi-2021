@@ -12,7 +12,6 @@ import br.com.sicredi.assembly.vote.dto.VoteDTO;
 import br.com.sicredi.assembly.vote.entity.VoteEntity;
 import br.com.sicredi.assembly.vote.service.VoteService;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -61,14 +60,6 @@ public class VoteBusiness implements ServiceInterface<VoteDTO> {
 
                     });
         });
-        // todo Buscar o membro pelo cpf - OK
-        // todo ver se o membro já votou - OK
-        // todo se ele nao votou deixar ele votar - OK
-        // todo atualizar agenda business com a adição de novo cpf na lista de votantes - OK
-        // todo se ele já votou não pode votar - OK
-        //
-        // todo tem que validar o horário do voto com relação a pauta - OK
-
         return vote.get();
     }
 
