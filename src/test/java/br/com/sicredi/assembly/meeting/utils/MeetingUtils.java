@@ -1,11 +1,11 @@
-package br.com.sicredi.assembly.meeting.util;
+package br.com.sicredi.assembly.meeting.utils;
 
 import br.com.sicredi.assembly.meeting.dto.MeetingDTO;
 import br.com.sicredi.assembly.meeting.entity.MeetingEntity;
 
 import java.time.LocalDateTime;
 
-public abstract class MeetingUtil {
+public abstract class MeetingUtils {
     public static MeetingEntity entity(){
         return MeetingEntity.builder()
                 .id("id1")

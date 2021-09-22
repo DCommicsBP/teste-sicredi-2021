@@ -37,10 +37,12 @@ public class AgendaService implements ServiceInterface<AgendaEntity> {
 
     @Override
     public void edit(String id, AgendaEntity entity) {
-        get(id)
-                .map((old) -> {
+        repository.findById(id)
+                .ifPresentOrElse((old) -> {
                     entity.setId(old.getId());
-                    return  repository.save(entity);
+                    repository.save(entity);
+                }, ()-> {
+                    throw new NotFoundException("Não é possível editar a pauta da assembléia porque o registro não existe.");
                 });
     }
 
@@ -51,7 +53,7 @@ public class AgendaService implements ServiceInterface<AgendaEntity> {
 
     @Override
     public void delete(String id) {
-        get(id)
+        repository.findById(id)
                 .ifPresent((old) -> repository.deleteById(old.getId()));
     }
 }

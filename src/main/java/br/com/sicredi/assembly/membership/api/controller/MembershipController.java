@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/member")
+@RequestMapping("/membership")
 @AllArgsConstructor
 public class MembershipController {
     private final MembershipBusiness business;

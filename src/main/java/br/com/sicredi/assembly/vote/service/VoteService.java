@@ -31,7 +31,7 @@ public class VoteService implements ServiceInterface<VoteEntity> {
             log.error("Não foi possível encontrar o registro de voto. ");
             throw new NotFoundException("Não foi possível encontrar o registro de voto pelo ID informado. ");
         }
-        return this.repository.findById(id);
+        return vote;
     }
 
     @Override
@@ -49,6 +49,6 @@ public class VoteService implements ServiceInterface<VoteEntity> {
 
     @Override
     public void delete(String id) {
-        get(id).ifPresent(this.repository::delete);
+        this.repository.findById(id).ifPresent(this.repository::delete);
     }
 }

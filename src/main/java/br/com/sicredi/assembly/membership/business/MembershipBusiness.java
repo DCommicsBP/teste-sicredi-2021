@@ -31,7 +31,8 @@ public class MembershipBusiness implements ServiceInterface<MembershipDTO> {
     public MembershipDTO create(MembershipDTO membershipDTO) {
 
         String cpf = checkZerosAndOne(membershipDTO.getCpf());
-        boolean isUsed = checkIfCpfHasAlreadyBeenUsed(service.list(), cpf);
+        List<MembershipEntity> list = service.list();
+        boolean isUsed = checkIfCpfHasAlreadyBeenUsed(list, cpf);
         boolean isValid = isValid(cpf);
 
         if (isUsed) {

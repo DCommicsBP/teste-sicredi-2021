@@ -6,6 +6,7 @@ import br.com.sicredi.assembly.agenda.dto.ResultAgendaDTO;
 import br.com.sicredi.assembly.agenda.entity.AgendaEntity;
 import br.com.sicredi.assembly.agenda.service.AgendaService;
 import br.com.sicredi.assembly.agenda.util.AgendaUtil;
+import br.com.sicredi.assembly.core.exceptions.NotFoundException;
 import br.com.sicredi.assembly.core.interfaces.ServiceInterface;
 import br.com.sicredi.assembly.core.validate.DateValidator;
 import br.com.sicredi.assembly.meeting.entity.MeetingEntity;
@@ -15,6 +16,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -31,6 +33,13 @@ public class AgendaBusiness implements ServiceInterface<AgendaDTO> {
 
     @Override
     public AgendaDTO create(AgendaDTO agendaDTO) {
+        if(agendaDTO.getInitDate().equals(null)){
+            agendaDTO.setInitDate(LocalDateTime.now());
+        }
+        if(agendaDTO.getFinishDate().equals(null)){
+            agendaDTO.setFinishDate(LocalDateTime.now());
+        }
+
         Optional<MeetingEntity> meetingEntity = meetingService.get(agendaDTO.getMeetingId());
         AtomicReference<AgendaEntity> agendaEntityAtomicReference = new AtomicReference<>();
         meetingEntity.ifPresent(meeting -> {
@@ -82,9 +91,11 @@ public class AgendaBusiness implements ServiceInterface<AgendaDTO> {
         AtomicReference<ResultAgendaDTO> result = new AtomicReference<>();
         log.info("Entrou no serviço que monta o resultado da votação. ");
 
-        get(id).ifPresent(agenda -> {
-            result.set(AgendaUtil.resultAgendaDTOBuilder(agenda));
+        service.get(id).ifPresentOrElse(agenda -> {
+            result.set(AgendaUtil.resultAgendaDTOBuilder(converter.convertFromEntity(agenda)));
             log.info("Processou a votação. ");
+        }, ()->{
+            throw new NotFoundException("Não foi possível encontrar o registro. ");
         });
         return result.get();
     }

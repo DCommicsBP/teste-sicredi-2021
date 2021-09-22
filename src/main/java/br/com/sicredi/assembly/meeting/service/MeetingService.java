@@ -29,12 +29,12 @@ public class MeetingService implements ServiceInterface<MeetingEntity> {
             log.error("Não foi possível encontrar o registro da assembléia. ");
             throw new NotFoundException("Não foi possível encontrar o dado. ");
         }
-        return repository.findById(id);
+        return meeting;
     }
 
     @Override
     public void edit(String id, MeetingEntity meetingEntity) {
-        get(id).ifPresent(meetingEntity1->{
+        repository.findById(id).ifPresent(meetingEntity1->{
             meetingEntity.setId(meetingEntity.getId());
             repository.save(meetingEntity);
         });

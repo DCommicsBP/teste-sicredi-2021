@@ -4,7 +4,6 @@ import br.com.sicredi.assembly.meeting.api.converter.MeetingConverter;
 import br.com.sicredi.assembly.meeting.dto.MeetingDTO;
 import br.com.sicredi.assembly.meeting.entity.MeetingEntity;
 import br.com.sicredi.assembly.meeting.service.MeetingService;
-import br.com.sicredi.assembly.meeting.util.MeetingUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -16,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static br.com.sicredi.assembly.meeting.utils.MeetingUtils.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -33,9 +33,9 @@ public class MeetingBusinessTest {
 
     @Test
     public void createTest() {
-        MeetingEntity meetingEntity = MeetingUtil.entity();
-        MeetingEntity meetingEntity2 = MeetingUtil.entity();
-        MeetingDTO meetingDTO = MeetingUtil.dto();
+        MeetingEntity meetingEntity = entity();
+        MeetingEntity meetingEntity2 = entity();
+        MeetingDTO meetingDTO = dto();
 
 
         when(converter.convertFromDto(meetingDTO)).thenReturn(meetingEntity2);
@@ -53,8 +53,8 @@ public class MeetingBusinessTest {
 
     @Test
     public void getTest() {
-        MeetingDTO meetingDTO = MeetingUtil.dto();
-        MeetingEntity meetingEntity = MeetingUtil.entity();
+        MeetingDTO meetingDTO = dto();
+        MeetingEntity meetingEntity = entity();
 
         when(service.get(meetingEntity.getId())).thenReturn(Optional.of(meetingEntity));
 
@@ -73,8 +73,8 @@ public class MeetingBusinessTest {
 
     @Test
     public void editTest() {
-        MeetingDTO meetingDTO = MeetingUtil.dto();
-        MeetingEntity meetingEntity = MeetingUtil.entity();
+        MeetingDTO meetingDTO = dto();
+        MeetingEntity meetingEntity = entity();
 
         when(converter.convertFromDto(meetingDTO)).thenReturn(meetingEntity);
         business.edit(meetingDTO.getId(), meetingDTO);
@@ -85,8 +85,8 @@ public class MeetingBusinessTest {
 
     @Test
     public void listTest() {
-        List<MeetingDTO> meetingDTOList = Arrays.asList(MeetingUtil.dto(), MeetingUtil.dto2());
-        List<MeetingEntity> meetingEntities = Arrays.asList(MeetingUtil.entity(),MeetingUtil.entity2());
+        List<MeetingDTO> meetingDTOList = Arrays.asList(dto(),dto2());
+        List<MeetingEntity> meetingEntities = Arrays.asList(entity(), entity2());
 
         when(converter.convertListEntityToDto(meetingEntities)).thenReturn(meetingDTOList);
 

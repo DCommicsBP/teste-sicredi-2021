@@ -18,6 +18,7 @@ public class MeetingDTO {
     private String title;
     @NotEmpty(message = "Uma breve descrição sobre o encontro deve ser postada. ")
     private String description;
+    @NotNull(message = "Você deve fornecer a data de incicio do encontro.")
     private LocalDateTime initDate;
     @NotNull(message = "Você deve fornecer a data final do encontro.")
     private LocalDateTime finishDate;

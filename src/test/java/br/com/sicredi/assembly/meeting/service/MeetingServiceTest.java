@@ -1,9 +1,9 @@
 package br.com.sicredi.assembly.meeting.service;
 
-import br.com.sicredi.assembly.agenda.entity.AgendaEntity;
+import br.com.sicredi.assembly.agenda.utils.AgendaUtils;
 import br.com.sicredi.assembly.meeting.entity.MeetingEntity;
 import br.com.sicredi.assembly.meeting.repository.MeetingRepository;
-import br.com.sicredi.assembly.meeting.util.MeetingUtil;
+import br.com.sicredi.assembly.meeting.utils.MeetingUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static br.com.sicredi.assembly.agenda.utils.AgendaUtils.*;
+import static br.com.sicredi.assembly.meeting.utils.MeetingUtils.*;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
@@ -22,7 +22,6 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MeetingServiceTest {
-
 
     @Mock
     private MeetingRepository repository;
@@ -32,7 +31,7 @@ public class MeetingServiceTest {
 
     @Test
     public void createTest() {
-        MeetingEntity entity = MeetingUtil.entity2();
+        MeetingEntity entity = entity2();
         when(repository.save(entity)).thenReturn(entity);
 
         MeetingEntity newEntity = service.create(entity);
@@ -46,7 +45,7 @@ public class MeetingServiceTest {
 
     @Test
     public void getTest() {
-        Optional<MeetingEntity> entity = Optional.of(MeetingUtil.entity());
+        Optional<MeetingEntity> entity = Optional.of(entity());
         when(repository.findById(entity.get().getId())).thenReturn(entity);
 
         Optional<MeetingEntity> entity2 = service.get(entity.get().getId());
@@ -59,14 +58,14 @@ public class MeetingServiceTest {
     @Test
     public void editTest() {
 
-        when(repository.findById(entity(dto()).getId())).thenReturn(Optional.of(MeetingUtil.entity2()));
+        when(repository.findById(entity().getId())).thenReturn(Optional.of(entity2()));
 
-        service.edit(entity(dto()).getId(), MeetingUtil.entity());
+        service.edit(entity().getId(), entity());
     }
 
     @Test
     public void listTest() {
-        List<MeetingEntity> entities = Arrays.asList(MeetingUtil.entity2(), MeetingUtil.entity());
+        List<MeetingEntity> entities = Arrays.asList(entity2(), entity());
         when(repository.findAll()).thenReturn(entities);
 
         List<MeetingEntity> entitiesList = service.list();
@@ -78,8 +77,9 @@ public class MeetingServiceTest {
 
     @Test
     public void deleteTest() {
-        String id = anyString();
-        this.service.delete(id);
-        verify(repository).findById(id);
+        Optional<MeetingEntity> entity = Optional.of(MeetingUtils.entity());
+        when(repository.findById(entity.get().getId())).thenReturn(entity);
+        this.service.delete(entity.get().getId());
+        verify(repository).findById(entity.get().getId());
     }
 }

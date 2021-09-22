@@ -27,13 +27,13 @@ public class MembershipService implements ServiceInterface<MembershipEntity> {
         if(findMembership.isEmpty()){
             log.error("Não foi possivel encontrar o registro do cooperado.");
         }
-        return repository.findById(id);
+        return findMembership;
     }
 
     @Override
     public void edit(String id, MembershipEntity membershipEntity) {
 
-            get(id).ifPresent(membershipEntity1 -> {
+            repository.findById(id).ifPresent(membershipEntity1 -> {
 
                 membershipEntity.setId(membershipEntity1.getId());
                 repository.save(membershipEntity);

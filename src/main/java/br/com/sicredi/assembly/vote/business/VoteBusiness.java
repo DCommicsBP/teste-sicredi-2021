@@ -16,6 +16,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -54,7 +55,9 @@ public class VoteBusiness implements ServiceInterface<VoteDTO> {
                                 "O voto não pode ser computado porque não está de acordo com o limite de tempo. ");
 
                         VoteEntity voteEntity = service.create(converter.convertFromDto(voteDTO));
-                        agendaDTO.getMembershipCpf().add(voteDTO.getMemberCpf());
+                        List<String> cpfs =  new ArrayList<>();
+                        cpfs.addAll(agendaDTO.getMembershipCpf());
+                        cpfs.add(voteDTO.getMemberCpf());
                         agendaBusiness.edit(agendaDTO.getId(), agendaDTO);
                         vote.set(converter.convertFromEntity(service.create(voteEntity)));
 

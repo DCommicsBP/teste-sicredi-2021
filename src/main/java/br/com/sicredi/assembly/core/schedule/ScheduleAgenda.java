@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 
 @Component
-//@EnableScheduling
+@EnableScheduling
 public class ScheduleAgenda {
     final Logger log = Logger.getLogger(ScheduleAgenda.class);
     @Autowired
@@ -21,7 +21,7 @@ public class ScheduleAgenda {
     private final long MINUTES = 1000 * 60;
     ProducerMessage producerMessage;
 
-//    @Scheduled(fixedDelay = MINUTES)
+    @Scheduled(fixedDelay = MINUTES)
     public void verifyByMinute() {
 
        agendaBusiness

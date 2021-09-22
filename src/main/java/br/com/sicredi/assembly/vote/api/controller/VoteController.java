@@ -23,21 +23,10 @@ public class VoteController {
         return ResponseEntity.ok(business.create(voteDTO));
     }
 
-    @PutMapping
-    public ResponseEntity<?> edit(@PathVariable String id, @RequestBody VoteDTO voteDTO) {
-        business.edit(id, voteDTO);
-        return ResponseEntity.noContent().build();
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> find(@PathVariable String id) {
         return ResponseEntity.ok(business.get(id));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable String id) {
-        business.delete(id);
-        return ResponseEntity.noContent().build();
     }
 
 }

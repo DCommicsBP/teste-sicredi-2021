@@ -1,8 +1,8 @@
 package br.com.sicredi.assembly.agenda.service;
 
-;
 import br.com.sicredi.assembly.agenda.entity.AgendaEntity;
 import br.com.sicredi.assembly.agenda.repository.AgendaRepository;
+import br.com.sicredi.assembly.core.exceptions.NotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -55,14 +55,25 @@ public class AgendaServiceTest {
         verify(repository).findById(entity.get().getId());
     }
 
+    @Test(expected = NotFoundException.class)
+    public void getWhenNotFoundExceptionTest() {
+        when(repository.findById(entity(dto()).getId())).thenThrow(NotFoundException.class);
+        service.get(dto().getId());
+        verify(repository).findById(dto().getId());
+    }
+
     @Test
     public void editTest() {
-
         when(repository.findById(entity(dto()).getId())).thenReturn(Optional.of(entity2()));
-
         service.edit(entity(dto()).getId(), entity(dto()));
+        verify(repository).findById(entity(dto()).getId());
+    }
 
-
+    @Test(expected = NotFoundException.class)
+    public void editWhenNotFoundExceptionTest() {
+        when(repository.findById(entity(dto()).getId())).thenThrow(NotFoundException.class);
+        service.edit(entity(dto()).getId(), entity(dto()));
+        verify(repository).findById(entity(dto()).getId());
     }
 
     @Test
