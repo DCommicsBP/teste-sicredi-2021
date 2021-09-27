@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/meeting")
@@ -15,17 +17,17 @@ public class MeetingController {
     private final MeetingBusiness business;
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody MeetingDTO meetingDTO){
+    public ResponseEntity<MeetingDTO> create(@RequestBody MeetingDTO meetingDTO){
         return new ResponseEntity<>(business.create(meetingDTO), HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<?> listAll(){
+    public ResponseEntity<List<MeetingDTO>> listAll(){
         return new ResponseEntity<>(business.list(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> listAll(@PathVariable String id){
+    public ResponseEntity<MeetingDTO> findMeet(@PathVariable String id){
         return new ResponseEntity<>(business.get(id).get(), HttpStatus.OK);
     }
 

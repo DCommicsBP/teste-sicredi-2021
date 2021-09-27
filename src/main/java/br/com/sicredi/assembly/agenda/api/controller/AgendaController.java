@@ -2,11 +2,14 @@ package br.com.sicredi.assembly.agenda.api.controller;
 
 import br.com.sicredi.assembly.agenda.business.AgendaBusiness;
 import br.com.sicredi.assembly.agenda.dto.AgendaDTO;
+import br.com.sicredi.assembly.agenda.dto.ResultAgendaDTO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/agenda")
@@ -16,17 +19,17 @@ public class AgendaController {
     private final AgendaBusiness business;
 
     @GetMapping
-    public ResponseEntity<?> list(){
+    public ResponseEntity<List<AgendaDTO>> list(){
         return ResponseEntity.ok(business.list());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> get(@PathVariable String id){
-        return ResponseEntity.ok(business.get(id));
+    public ResponseEntity<AgendaDTO> get(@PathVariable String id){
+        return ResponseEntity.ok(business.get(id).get());
     }
 
     @GetMapping("/{id}/result")
-    public ResponseEntity<?> getResult(@PathVariable String id){
+    public ResponseEntity<ResultAgendaDTO> getResult(@PathVariable String id){
         return ResponseEntity.ok(business.returnResult(id));
     }
 
@@ -43,7 +46,7 @@ public class AgendaController {
     }
     
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody AgendaDTO agenda){
+    public ResponseEntity<AgendaDTO> create(@RequestBody AgendaDTO agenda){
         return ResponseEntity.ok(business.create(agenda));
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/membership")
@@ -15,16 +16,16 @@ public class MembershipController {
     private final MembershipBusiness business;
 
     @GetMapping
-    public ResponseEntity<?> findAll() {
+    public ResponseEntity<List<MembershipDTO>> findAll() {
         return ResponseEntity.ok(business.list());
     }
     @GetMapping("/{id}")
-    public ResponseEntity<?> find(@PathVariable String id) {
-        return ResponseEntity.ok(business.get(id));
+    public ResponseEntity<MembershipDTO> find(@PathVariable String id) {
+        return ResponseEntity.ok(business.get(id).get());
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody @Valid MembershipDTO membershipDTO) {
+    public ResponseEntity<MembershipDTO> create(@RequestBody @Valid MembershipDTO membershipDTO) {
         return ResponseEntity.ok(business.create(membershipDTO));
     }
 
