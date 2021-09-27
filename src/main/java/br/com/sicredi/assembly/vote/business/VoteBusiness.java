@@ -16,6 +16,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -54,13 +55,16 @@ public class VoteBusiness implements ServiceInterface<VoteDTO> {
                         DateValidator.validateVotingDateBetweenTwoDates(agendaDTO.getInitDate(), agendaDTO.getFinishDate(), voteDTO.getTime(),
                                 "O voto não pode ser computado porque não está de acordo com o limite de tempo. ");
 
-                        VoteEntity voteEntity = service.create(converter.convertFromDto(voteDTO));
-                        List<String> cpfs =  new ArrayList<>();
-                        cpfs.addAll(agendaDTO.getMembershipCpf());
-                        cpfs.add(voteDTO.getMemberCpf());
-                        agendaBusiness.edit(agendaDTO.getId(), agendaDTO);
-                        vote.set(converter.convertFromEntity(service.create(voteEntity)));
+                        if(voteDTO.getTime().isAfter(LocalDateTime.now())) {
+                            VoteEntity voteEntity = service.create(converter.convertFromDto(voteDTO));
+                            List<String> cpfs = new ArrayList<>();
+                            cpfs.addAll(agendaDTO.getMembershipCpf());
+                            cpfs.add(voteDTO.getMemberCpf());
+                            agendaDTO.setMembershipCpf(cpfs);
 
+                            agendaBusiness.edit(agendaDTO.getId(), agendaDTO);
+                            vote.set(converter.convertFromEntity(service.create(voteEntity)));
+                        }
                     });
         });
         return vote.get();
