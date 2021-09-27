@@ -21,7 +21,7 @@ public class MeetingBusiness implements ServiceInterface<MeetingDTO> {
 
     private final MeetingService service;
     private final MeetingConverter converter;
-    private static final Logger log = LogManager.getLogger(AgendaBusiness.class);
+    private static final Logger log = LogManager.getLogger(MeetingBusiness.class);
 
     @Override
     public MeetingDTO create(MeetingDTO meetingDTO) {

@@ -8,5 +8,5 @@ public interface ConverterInterface<DTOClass, EntityClass> {
 
     List<DTOClass> convertListEntityToDto(List<EntityClass> entityList);
 
-    List<EntityClass> convertListDtoToEntity(List<DTOClass> entityList);
+    List<EntityClass> convertListDtoToEntity(List<DTOClass> dtoList);
 }

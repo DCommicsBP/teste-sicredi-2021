@@ -42,7 +42,7 @@ public class AgendaConverter implements ConverterInterface<AgendaDTO, AgendaEnti
     }
 
     @Override
-    public List<AgendaEntity> convertListDtoToEntity(List<AgendaDTO> entityList){
-        return entityList.stream().map(this::convertFromDto).collect(Collectors.toList());
+    public List<AgendaEntity> convertListDtoToEntity(List<AgendaDTO> dtoList){
+        return dtoList.stream().map(this::convertFromDto).collect(Collectors.toList());
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -17,7 +18,7 @@ public class MeetingController {
     private final MeetingBusiness business;
 
     @PostMapping
-    public ResponseEntity<MeetingDTO> create(@RequestBody MeetingDTO meetingDTO){
+    public ResponseEntity<MeetingDTO> create(@RequestBody @Valid MeetingDTO meetingDTO){
         return new ResponseEntity<>(business.create(meetingDTO), HttpStatus.CREATED);
     }
 
@@ -38,7 +39,7 @@ public class MeetingController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> edit(@PathVariable String id, @RequestBody MeetingDTO meetingDTO){
+    public ResponseEntity<?> edit(@PathVariable String id, @RequestBody @Valid MeetingDTO meetingDTO){
         business.edit(id, meetingDTO);
         return ResponseEntity.noContent().build();
     }

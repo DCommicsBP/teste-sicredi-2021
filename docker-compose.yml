@@ -47,15 +47,6 @@ services:
       - "mongodbdata:/data"
     networks:
       - mongo-compose-network
-  minio:
-    image: bitnami/minio:latest
-    ports:
-      - "9090:9090"
-    environment:
-      MINIO_ACCESS_KEY: minio
-      MINIO_SECRET_KEY: minio123
-    volumes:
-      - /c/docker/data:/data
 volumes:
   mongodbdata:
     external: true
