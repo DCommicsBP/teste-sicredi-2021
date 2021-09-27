@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -40,13 +41,13 @@ public class AgendaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> edit(@PathVariable String id, @RequestBody @Validated AgendaDTO agendaDTO){
+    public ResponseEntity<?> edit(@PathVariable String id, @RequestBody @Valid AgendaDTO agendaDTO){
         business.edit(id, agendaDTO);
         return ResponseEntity.noContent().build();
     }
     
     @PostMapping
-    public ResponseEntity<AgendaDTO> create(@RequestBody AgendaDTO agenda){
+    public ResponseEntity<AgendaDTO> create(@RequestBody @Valid AgendaDTO agenda){
         return ResponseEntity.ok(business.create(agenda));
     }
 }

@@ -26,7 +26,7 @@ public class MeetingBusiness implements ServiceInterface<MeetingDTO> {
     @Override
     public MeetingDTO create(MeetingDTO meetingDTO) {
         log.info("Entrou no serviço que cria nova assembléia. ");
-        MeetingEntity meetingEntity = converter.convertFromDto(meetingDTO);
+        MeetingEntity meetingEntity = service.create(converter.convertFromDto(meetingDTO));
         return converter.convertFromEntity(meetingEntity);
     }
 

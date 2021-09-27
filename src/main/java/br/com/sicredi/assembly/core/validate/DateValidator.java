@@ -27,6 +27,12 @@ public abstract class DateValidator {
         }
     }
 
+    public void validateStartDateAftereEndDate(LocalDateTime startDate, LocalDateTime endDate ){
+        if(startDate.isAfter(endDate)){
+            throw new BadRequestException("Data inicial posterior a data final.");
+        }
+    }
+
     public static void validateAgendaDate(LocalDateTime initDateAgenda, LocalDateTime finishDateAgenda, LocalDateTime initDateMeeting, LocalDateTime finishDateMeeting) {
         validateEndDateBeforeStartDate(initDateAgenda, finishDateAgenda);
         validateEndDateBeforeStartDate(initDateMeeting, initDateMeeting);

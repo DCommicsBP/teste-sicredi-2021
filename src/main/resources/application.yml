@@ -21,8 +21,12 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
+
+  jackson:
+    serialization:
+      write_dates_as_timestamps: false
 server:
-  port: 8084
+  port: 8091
 management:
   endpoints:
     web:
