@@ -33,11 +33,11 @@ public class AgendaBusiness implements ServiceInterface<AgendaDTO> {
 
     @Override
     public AgendaDTO create(AgendaDTO agendaDTO) {
-        if(agendaDTO.getInitDate().equals(null)){
+        if (agendaDTO.getInitDate() == null) {
             agendaDTO.setInitDate(LocalDateTime.now());
         }
-        if(agendaDTO.getFinishDate().equals(null)){
-            agendaDTO.setFinishDate(LocalDateTime.now());
+        if (agendaDTO.getFinishDate() == null) {
+            agendaDTO.setFinishDate(LocalDateTime.now().plusMinutes(1));
         }
 
         Optional<MeetingEntity> meetingEntity = meetingService.get(agendaDTO.getMeetingId());
@@ -94,7 +94,7 @@ public class AgendaBusiness implements ServiceInterface<AgendaDTO> {
         service.get(id).ifPresentOrElse(agenda -> {
             result.set(AgendaUtil.resultAgendaDTOBuilder(converter.convertFromEntity(agenda)));
             log.info("Processou a votação. ");
-        }, ()->{
+        }, () -> {
             throw new NotFoundException("Não foi possível encontrar o registro. ");
         });
         return result.get();
