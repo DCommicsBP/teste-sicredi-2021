@@ -22,8 +22,6 @@ Levando em consideração que uma assembleia pode possuir "Y" pautas, que cada p
 
 ###Design Pattern - Utilizados
 1. Converter
-2. Builder
-
 
 # Tecnologias que foram utilizadas para implementação do sistema
 1.	Kafka - Utilizado para informar que a sessão de votação de determinada pauta foi finalizada. 
