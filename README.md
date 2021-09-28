@@ -11,7 +11,8 @@ Ao abrir cada nicho o programador vai se deparar com outros subpacotes que têm 
 
 ![img_4.png](img_4.png)
 
-Cada camada possui uma atribuição, onde as classes estão postas conforme o nome da camada. Então se existe um pacote nomeado "Business", teremos classes que existem para fazer o trânsito de dados conforme as regras de negócio estabelecidas no exercício.  
+Cada camada possui uma atribuição, onde as classes estão postas conforme o nome da camada. Então se existe um pacote nomeado "Business", teremos classes que existem para fazer o trânsito de dados conforme as regras de negócio estabelecidas no exercício. A estrutura se diferencia apenas no pacote Core, onde estão contidas classes que serão utilizadas em toda a aplicação de algum modo. 
+![img_5.png](img_5.png)
 
 ###A estrutura básica do sistema
 
